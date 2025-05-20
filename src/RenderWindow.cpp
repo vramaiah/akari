@@ -1,0 +1,58 @@
+#include "SDL3/SDL_init.h"
+#include "SDL3/SDL_log.h"
+#include "SDL3/SDL_render.h"
+#include "SDL3/SDL_video.h"
+#include <cstddef>
+#include <string_view>
+
+#include "RenderWindow.h"
+
+RenderWindow::RenderWindow(
+    std::string_view title,
+    int width,
+    int height
+)
+: m_window {nullptr}, m_renderer {nullptr}
+{
+    m_window = SDL_CreateWindow(
+        title.data(),
+        width,
+        height,
+        SDL_WINDOW_ALWAYS_ON_TOP 
+    );
+    // Checks if window was created or not
+    if (!m_window)
+    {
+        SDL_LogError(
+            SDL_LOG_CATEGORY_APPLICATION,
+            "SDL_CreateWindow error: %s",
+            SDL_GetError()
+        );
+        SDL_Quit();
+    }
+    m_renderer = SDL_CreateRenderer(m_window, NULL);
+
+    if (!m_renderer)
+    {
+        SDL_LogError(
+                SDL_LOG_CATEGORY_APPLICATION,
+                "SDL_CreateRendered error: %s",
+                SDL_GetError()
+        );
+        SDL_Quit();
+    }
+    SDL_SetWindowPosition(m_window, 100, 100);
+    SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 100); // Black background
+    SDL_RenderClear(m_renderer);
+    SDL_RenderPresent(m_renderer);
+}
+
+RenderWindow::~RenderWindow()
+{
+    SDL_DestroyWindow(m_window);
+}
+
+void RenderWindow::renderPresent()
+{
+    SDL_RenderPresent(m_renderer);
+}
