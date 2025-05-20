@@ -2,6 +2,7 @@
 
 #include "SDL3/SDL_render.h"
 #include "SDL3/SDL_video.h"
+
 #include <string_view>
 
 class RenderWindow
@@ -17,5 +18,8 @@ class RenderWindow
             int height
         );
         ~RenderWindow();
-        void renderPresent();
+        void display();
+        void clear();
+        SDL_Texture* loadTexture(std::string_view filePath);
+        void renderTexture(SDL_Texture* texture);
 };

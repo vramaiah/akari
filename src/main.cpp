@@ -3,6 +3,7 @@
 #include "SDL3/SDL_log.h"
 
 #include "RenderWindow.h"
+#include "SDL3/SDL_render.h"
 
 constexpr int windowLength {1280};
 constexpr int windowHeight {720};
@@ -27,6 +28,10 @@ int main()
                 "Current video driver: %s", 
                 SDL_GetCurrentVideoDriver()
         );
+        // Load a texture
+        SDL_Texture* grassTexture {
+            window.loadTexture("assets/ground_grass_1.png")
+        };
         // Main Game Loop
         SDL_Event event {};
         bool quit {false};
@@ -37,7 +42,9 @@ int main()
                 if (event.type == SDL_EVENT_QUIT)
                     quit = true;
             }
-            window.renderPresent();
+            window.clear();
+            window.renderTexture(grassTexture);
+            window.display();
         }
     }
     SDL_Quit();
