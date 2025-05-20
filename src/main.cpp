@@ -8,6 +8,7 @@
 constexpr int windowLength {1280};
 constexpr int windowHeight {720};
 
+
 int main()
 {
     if (!SDL_Init(SDL_INIT_VIDEO))
@@ -30,7 +31,7 @@ int main()
         );
         // Load a texture
         SDL_Texture* grassTexture {
-            window.loadTexture("assets/ground_grass_1.png")
+            window.loadTexture("./res/gfx/ground_grass_1.png")
         };
         // Main Game Loop
         SDL_Event event {};
