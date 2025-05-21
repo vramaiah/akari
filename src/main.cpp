@@ -22,17 +22,17 @@ int main()
     }
     {
         RenderWindow window {
-            "Ice Rinks alpha", windowLength, windowHeight
+            "Akari [Alpha]", windowLength, windowHeight
+        };
+        // Load a texture
+        SDL_Texture* grassTexture {
+            window.loadTexture("./res/gfx/ground_grass_1.png")
         };
         // Logs current video driver
         SDL_Log(
                 "Current video driver: %s", 
                 SDL_GetCurrentVideoDriver()
         );
-        // Load a texture
-        SDL_Texture* grassTexture {
-            window.loadTexture("./res/gfx/ground_grass_1.png")
-        };
         // Main Game Loop
         SDL_Event event {};
         bool quit {false};

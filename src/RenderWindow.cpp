@@ -42,7 +42,6 @@ RenderWindow::RenderWindow(
         SDL_Quit();
     }
     SDL_SetWindowPosition(m_window, 100, 100);
-    display();
 }
 
 RenderWindow::~RenderWindow()
