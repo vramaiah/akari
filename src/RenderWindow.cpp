@@ -1,8 +1,9 @@
-#include "SDL3/SDL_init.h"
-#include "SDL3/SDL_log.h"
-#include "SDL3/SDL_render.h"
-#include "SDL3/SDL_video.h"
-#include "SDL3_image/SDL_image.h"
+#include <SDL3/SDL_init.h>
+#include <SDL3/SDL_log.h>
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_video.h>
+#include <SDL3_image/SDL_image.h>
+#include <SDL3/SDL_rect.h>
 #include <cstddef>
 #include <string_view>
 
@@ -75,4 +76,10 @@ SDL_Texture* RenderWindow::loadTexture(std::string_view filePath)
 void RenderWindow::renderTexture(SDL_Texture* texture)
 {
     SDL_RenderTexture(m_renderer, texture, NULL, NULL);
+}
+
+void RenderWindow::renderTexture(
+    SDL_Texture* texture, SDL_FRect src, SDL_FRect dest)
+{
+    SDL_RenderTexture(m_renderer, texture, &src, &dest);
 }

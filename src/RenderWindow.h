@@ -1,7 +1,8 @@
 #pragma once
 
-#include "SDL3/SDL_render.h"
-#include "SDL3/SDL_video.h"
+#include "SDL3/SDL_rect.h"
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_video.h>
 
 #include <string_view>
 
@@ -22,4 +23,6 @@ class RenderWindow
         void clear();
         SDL_Texture* loadTexture(std::string_view filePath);
         void renderTexture(SDL_Texture* texture);
+        void renderTexture(
+            SDL_Texture* texture, SDL_FRect src, SDL_FRect dest);
 };

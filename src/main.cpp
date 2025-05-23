@@ -1,3 +1,4 @@
+#include "RigidSprite.h"
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_init.h"
 #include "SDL3/SDL_log.h"
@@ -33,6 +34,11 @@ int main()
                 "Current video driver: %s", 
                 SDL_GetCurrentVideoDriver()
         );
+        RigidSprite grass {
+            grassTexture,
+            {0, 0},
+            10
+        };
         // Main Game Loop
         SDL_Event event {};
         bool quit {false};
@@ -44,7 +50,7 @@ int main()
                     quit = true;
             }
             window.clear();
-            window.renderTexture(grassTexture);
+            grass.render(window);
             window.display();
         }
     }
