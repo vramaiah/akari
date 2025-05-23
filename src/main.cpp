@@ -4,11 +4,6 @@
 #include "SDL3/SDL_log.h"
 
 #include "RenderWindow.h"
-#include "SDL3/SDL_render.h"
-
-constexpr int windowLength {1280};
-constexpr int windowHeight {720};
-
 
 int main()
 {
@@ -22,20 +17,15 @@ int main()
         return 1;
     }
     {
-        RenderWindow window {
-            "Akari [Alpha]", windowLength, windowHeight
-        };
-        // Load a texture
-        SDL_Texture* grassTexture {
-            window.loadTexture("./res/gfx/ground_grass_1.png")
-        };
+        RenderWindow& window {RenderWindow::getInstance()}; 
         // Logs current video driver
         SDL_Log(
                 "Current video driver: %s", 
                 SDL_GetCurrentVideoDriver()
         );
+        // Creates a Grass Sprite
         RigidSprite grass {
-            grassTexture,
+            window.loadTexture("./res/gfx/ground_grass_1.png"),
             {0, 0},
             10
         };
@@ -50,7 +40,7 @@ int main()
                     quit = true;
             }
             window.clear();
-            grass.render(window);
+            grass.render();
             window.display();
         }
     }

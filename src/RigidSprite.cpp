@@ -21,9 +21,10 @@ RigidSprite::RigidSprite(
     m_destRect.h = m_sourceRect.h * scale;
 }
 
-void RigidSprite::render(RenderWindow& window) const
+void RigidSprite::render() const
 {
-    window.renderTexture(m_texture, m_sourceRect, m_destRect);
+    RenderWindow::getInstance().renderTexture(
+        m_texture, m_sourceRect, m_destRect);
 }
 
 void RigidSprite::update()

@@ -3,8 +3,6 @@
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
 
-#include "RenderWindow.h"
-
 class Entity
 {
     protected:
@@ -27,7 +25,7 @@ class Entity
             SDL_DestroyTexture(m_texture);
         }
 
-        virtual void render(RenderWindow& window) const = 0;
+        virtual void render() const = 0;
         virtual void update() = 0;
 };
 

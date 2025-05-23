@@ -13,7 +13,7 @@ class RigidSprite: public Entity
     public:
         RigidSprite(
             SDL_Texture* tex, std::pair<float, float> origin, float scale=1);
-        virtual void render(RenderWindow& window) const override;
+        virtual void render() const override;
         void update() override;
         virtual ~RigidSprite();
 };

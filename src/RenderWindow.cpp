@@ -9,6 +9,10 @@
 
 #include "RenderWindow.h"
 
+constexpr int windowLength {1280};
+constexpr int windowHeight {720};
+constexpr std::string_view windowName {"Akari [alpha]"};
+
 RenderWindow::RenderWindow(
     std::string_view title,
     int width,
@@ -82,4 +86,10 @@ void RenderWindow::renderTexture(
     SDL_Texture* texture, SDL_FRect src, SDL_FRect dest)
 {
     SDL_RenderTexture(m_renderer, texture, &src, &dest);
+}
+
+RenderWindow& RenderWindow::getInstance()
+{
+    static RenderWindow instance {windowName, windowLength, windowHeight};
+    return instance;
 }
