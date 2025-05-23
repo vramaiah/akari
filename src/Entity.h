@@ -15,16 +15,8 @@ class Entity
             SDL_Texture* tex,
             const SDL_FRect& sourceRect,
             const SDL_FRect& destRect
-        )
-        : m_texture {tex}, m_sourceRect {sourceRect}, m_destRect {destRect}
-        {
-        }
-
-        virtual ~Entity()
-        {
-            SDL_DestroyTexture(m_texture);
-        }
-
+        );
+        virtual ~Entity();
         virtual void render() const = 0;
         virtual void update() = 0;
 };
