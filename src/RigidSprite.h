@@ -5,7 +5,7 @@
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
 
-#include "Entity.h"
+#include "rendering/Entity.h"
 
 class RigidSprite: public IEntity 
 {

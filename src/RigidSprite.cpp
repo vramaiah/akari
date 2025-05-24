@@ -1,5 +1,5 @@
 #include "RigidSprite.h"
-#include "RenderWindow.h"
+#include "rendering/RenderWindow.h"
 
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_rect.h>
