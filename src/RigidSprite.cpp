@@ -1,15 +1,15 @@
 #include "RigidSprite.h"
-#include "Entity.h"
 #include "RenderWindow.h"
 
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
+
 #include <utility>
 
 RigidSprite::RigidSprite(
     SDL_Texture* tex, std::pair<float, float> origin, float scale)
-: Entity {tex, {}, {}}
+: m_scale {scale}, m_texture {tex}, m_origin {origin}
 {
     if (!SDL_GetTextureSize(tex, &m_sourceRect.w, &m_sourceRect.h))
         SDL_Log("Failed to get texture size: %s", SDL_GetError());
@@ -33,5 +33,4 @@ void RigidSprite::update()
 
 RigidSprite::~RigidSprite()
 {
-    Entity::~Entity();
 }

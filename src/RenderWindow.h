@@ -5,12 +5,14 @@
 #include <SDL3/SDL_video.h>
 
 #include <string_view>
+#include <vector>
 
 class RenderWindow
 {
     private:
         SDL_Window* m_window {nullptr};
         SDL_Renderer* m_renderer {nullptr};
+        std::vector<SDL_Texture*> m_textures {};
         void destroy();
 
     protected:

@@ -51,7 +51,13 @@ RenderWindow::RenderWindow(
 
 RenderWindow::~RenderWindow()
 {
+}
+
+void RenderWindow::destroy()
+{
     SDL_DestroyWindow(m_window);
+    for (SDL_Texture* texture: m_textures)
+        SDL_DestroyTexture(texture);
 }
 
 void RenderWindow::clear()
