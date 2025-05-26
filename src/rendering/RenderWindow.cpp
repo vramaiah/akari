@@ -19,33 +19,24 @@ RenderWindow::RenderWindow(
 )
 : m_window {nullptr}, m_renderer {nullptr}
 {
-    m_window = SDL_CreateWindow(
-        title.data(),
-        width,
-        height,
-        SDL_WINDOW_ALWAYS_ON_TOP 
-    );
-    // Checks if window was created or not
-    if (!m_window)
-    {
-        SDL_LogError(
-            SDL_LOG_CATEGORY_APPLICATION,
-            "SDL_CreateWindow error: %s",
-            SDL_GetError()
-        );
-        SDL_Quit();
-    }
-    m_renderer = SDL_CreateRenderer(m_window, NULL);
-    if (!m_renderer)
+    bool created {SDL_CreateWindowAndRenderer(
+            title.data(),
+            width,
+            height,
+            SDL_WINDOW_ALWAYS_ON_TOP, &m_window, &m_renderer)
+    };
+    if (!created)
     {
         SDL_LogError(
                 SDL_LOG_CATEGORY_APPLICATION,
-                "SDL_CreateRendered error: %s",
+                "SDL_CreateWindowAndRenderer error: %s",
                 SDL_GetError()
         );
         SDL_Quit();
     }
     SDL_SetWindowPosition(m_window, 100, 100);
+    SDL_SetRenderVSync(m_renderer, 1);
+    display();
 }
 
 RenderWindow::~RenderWindow()
