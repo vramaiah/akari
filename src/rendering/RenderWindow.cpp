@@ -7,11 +7,10 @@
 #include <cstddef>
 #include <string_view>
 
+#include "../Settings.h"
+
 #include "RenderWindow.h"
 
-constexpr int windowLength {1280};
-constexpr int windowHeight {720};
-constexpr std::string_view windowName {"Akari [alpha]"};
 
 RenderWindow::RenderWindow(
     std::string_view title,
@@ -96,6 +95,7 @@ void RenderWindow::renderTexture(
 
 RenderWindow& RenderWindow::getInstance()
 {
-    static RenderWindow instance {windowName, windowLength, windowHeight};
+    static RenderWindow instance {
+        Settings::windowName, Settings::windowWidth, Settings::windowHeight};
     return instance;
 }
