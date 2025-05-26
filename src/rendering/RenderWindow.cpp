@@ -23,7 +23,7 @@ RenderWindow::RenderWindow(
             title.data(),
             width,
             height,
-            SDL_WINDOW_ALWAYS_ON_TOP, &m_window, &m_renderer)
+            SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_ALWAYS_ON_TOP, &m_window, &m_renderer)
     };
     if (!created)
     {
@@ -36,6 +36,13 @@ RenderWindow::RenderWindow(
     }
     SDL_SetWindowPosition(m_window, 100, 100);
     SDL_SetRenderVSync(m_renderer, 1);
+    SDL_SetRenderDrawColor(
+            m_renderer,
+            Settings::backgroundColor.r,
+            Settings::backgroundColor.g, 
+            Settings::backgroundColor.b,
+            Settings::backgroundColor.a);
+    clear();
     display();
 }
 
@@ -79,9 +86,9 @@ void RenderWindow::renderTexture(SDL_Texture* texture)
 }
 
 void RenderWindow::renderTexture(
-    SDL_Texture* texture, SDL_FRect src, SDL_FRect dest)
+    SDL_Texture* texture, SDL_FRect dest)
 {
-    SDL_RenderTexture(m_renderer, texture, &src, &dest);
+    SDL_RenderTexture(m_renderer, texture, NULL, &dest);
 }
 
 RenderWindow& RenderWindow::getInstance()

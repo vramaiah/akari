@@ -35,5 +35,5 @@ class RenderWindow
         SDL_Texture* loadTexture(std::string_view filePath);
         void renderTexture(SDL_Texture* texture);
         void renderTexture(
-            SDL_Texture* texture, SDL_FRect src, SDL_FRect dest);
+            SDL_Texture* texture, SDL_FRect dest);
 };
