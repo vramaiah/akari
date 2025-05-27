@@ -23,7 +23,8 @@ RenderWindow::RenderWindow(
             title.data(),
             width,
             height,
-            SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_ALWAYS_ON_TOP, &m_window, &m_renderer)
+            SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_ALWAYS_ON_TOP,
+            &m_window, &m_renderer)
     };
     if (!created)
     {

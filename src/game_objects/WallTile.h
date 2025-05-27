@@ -10,6 +10,7 @@ class WallTile: public Tile
         int m_requiredLights {};
         SDL_Texture* m_texture {};
         SDL_FRect m_rect {};
+        inline static int s_blank {5};
 
     public:
         WallTile(int requiredLights, SDL_Texture* tex, float x, float y, float s);
@@ -18,4 +19,5 @@ class WallTile: public Tile
         int requiredLights() const {return m_requiredLights;}
         void render() const override;
         void update() override;
+        static int getBlankValue() {return s_blank;}
 };
