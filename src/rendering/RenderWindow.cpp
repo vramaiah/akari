@@ -37,12 +37,6 @@ RenderWindow::RenderWindow(
     }
     SDL_SetWindowPosition(m_window, 100, 100);
     SDL_SetRenderVSync(m_renderer, 1);
-    SDL_SetRenderDrawColor(
-            m_renderer,
-            Settings::backgroundColor.r,
-            Settings::backgroundColor.g, 
-            Settings::backgroundColor.b,
-            Settings::backgroundColor.a);
     clear();
     display();
 }
@@ -65,6 +59,12 @@ void RenderWindow::clear()
 
 void RenderWindow::display()
 {
+    SDL_SetRenderDrawColor(
+            m_renderer,
+            Settings::backgroundColor.r,
+            Settings::backgroundColor.g, 
+            Settings::backgroundColor.b,
+            Settings::backgroundColor.a);
     SDL_RenderPresent(m_renderer);
 }
 
@@ -95,6 +95,22 @@ void RenderWindow::renderTexture(
 RenderWindow& RenderWindow::getInstance()
 {
     static RenderWindow instance {
-        Settings::windowName, Settings::windowWidth, Settings::windowHeight};
+        Settings::windowName,
+        static_cast<int>(Settings::windowWidth),
+        static_cast<int>(Settings::windowHeight)
+    };
     return instance;
+}
+
+void RenderWindow::renderLine(float x1, float y1, float x2, float y2)
+{
+    SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
+    if(!SDL_RenderLine(m_renderer, x1, y1, x2, y2))
+    {
+        SDL_LogError(
+            SDL_LOG_CATEGORY_APPLICATION,
+            "SDL_RenderLine error: %s",
+            SDL_GetError()
+        );
+    }
 }

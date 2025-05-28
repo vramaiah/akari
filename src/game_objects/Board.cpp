@@ -1,5 +1,6 @@
 #include "Board.h"
 #include "../rendering/RenderWindow.h"
+#include "SDL3/SDL_render.h"
 #include "WallTile.h"
 #include "../Settings.h"
 #include "nlohmann/json.hpp"
@@ -73,6 +74,22 @@ void Board::render() const
 {
     for (auto& tile: m_tiles)
         tile.render();
+    // Draw grid lines
+    for (float f {1}; f <= Settings::gridSize; ++f)
+    {
+        RenderWindow::getInstance().renderLine(
+            0,
+            f * Settings::tileScale,
+            Settings::tileScale * Settings::gridSize,
+            f * Settings::tileScale
+        );
+        RenderWindow::getInstance().renderLine(
+            f * Settings::tileScale,
+            0,
+            f * Settings::tileScale,
+            Settings::tileScale * Settings::gridSize
+        );
+    }
 }
 
 void Board::update()

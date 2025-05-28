@@ -36,4 +36,5 @@ class RenderWindow
         void renderTexture(SDL_Texture* texture);
         void renderTexture(
             SDL_Texture* texture, SDL_FRect dest);
+        void renderLine(float x1, float y1, float x2, float y2);
 };

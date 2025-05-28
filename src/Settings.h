@@ -6,8 +6,10 @@
 namespace Settings
 {
     inline constexpr std::string_view windowName {"Akari [alpha]"};
-    inline constexpr int windowWidth {1280};
-    inline constexpr int windowHeight {720};
     inline constexpr float tileScale {150.0f};
-    inline constexpr SDL_Color backgroundColor {106, 99, 168, 255}; 
+    inline constexpr int gridSize {7}; 
+    inline constexpr double windowWidth {(150 * gridSize) / 2 + 10};
+    inline constexpr double windowHeight {windowWidth};
+    inline constexpr SDL_Color unlitColor {106, 99, 168, 255}; 
+    inline constexpr SDL_Color backgroundColor {77, 71, 125, 255}; 
 }

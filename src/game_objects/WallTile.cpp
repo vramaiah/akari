@@ -1,6 +1,7 @@
 #include "WallTile.h"
 #include "../rendering/RenderWindow.h"
 #include "SDL3/SDL_render.h"
+#include "../Settings.h"
 #include "SDL3/SDL.h"
 #include <string>
 
@@ -11,12 +12,8 @@ WallTile::WallTile(int requiredLights, SDL_Texture* tex, float x, float y, float
 {
     m_rect.x = x;
     m_rect.y = y;
-    float w {};
-    float h {};
-    if (!SDL_GetTextureSize(tex, &w, &h))
-        SDL_Log("Failed to get texture size: %s", SDL_GetError());
-    m_rect.w = s;
-    m_rect.h = (s / w) * h;
+    m_rect.w = Settings::tileScale;
+    m_rect.h = Settings::tileScale;
 }
 
 void WallTile::render() const
