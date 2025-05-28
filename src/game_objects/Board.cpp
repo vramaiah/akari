@@ -4,6 +4,7 @@
 #include "WallTile.h"
 #include "../Settings.h"
 #include "nlohmann/json.hpp"
+#include <optional>
 #include <string_view>
 #include <fstream>
 
@@ -29,8 +30,13 @@ Board::Board(std::string_view filePath)
     m_tileTextures.push_back(
         RenderWindow::getInstance().loadTexture("./res/gfx/b.png")
     );
+    //
+    for (int i {1}; i <= Settings::gridSize; ++i)
+    {
+        std::vector<Tile*> vec(Settings::gridSize);
+        m_tiles.push_back(vec);
+    }
     // Get level from file
-    // TODO: Make tiles dynamically allocated
     std::ifstream input_file(filePath);
     nlohmann::json puzzle_data {};
     input_file >> puzzle_data;
@@ -43,37 +49,39 @@ Board::Board(std::string_view filePath)
         if (type == "clue")
         {
             int value {feature.at("value").get<int>()};
-            WallTile tile{
+            WallTile* tile{ new WallTile {
                 value,
                 m_tileTextures[value],
                 col * Settings::tileScale,
                 row * Settings::tileScale,
                 Settings::tileScale
-            };
-            m_tiles.push_back(
-                tile
-            );
+            }};
+            m_tiles[row][col] = tile;
         }
         else
         {
-            WallTile tile{
+            WallTile* tile{ new WallTile {
                 WallTile::getBlankValue(),
                 m_tileTextures[WallTile::getBlankValue()],
                 col * Settings::tileScale,
                 row * Settings::tileScale,
                 Settings::tileScale
-            };
-            m_tiles.push_back(
-                tile
-            );
+            }};
+            m_tiles[row][col] = tile;
         }
     }
 }
 
 void Board::render() const
 {
-    for (auto& tile: m_tiles)
-        tile.render();
+    for (const auto& row: m_tiles)
+    {
+        for (const auto& tile: row)
+        {
+            if (tile)
+                tile->render();
+        }
+    }
     // Draw grid lines
     for (float f {1}; f <= Settings::gridSize; ++f)
     {
@@ -94,4 +102,15 @@ void Board::render() const
 
 void Board::update()
 {
+}
+
+Board::~Board()
+{
+    for (const auto& row: m_tiles)
+    {
+        for (const auto& tile: row)
+        {
+            delete tile;
+        }
+    }
 }
