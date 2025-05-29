@@ -35,6 +35,8 @@ class RenderWindow
         SDL_Texture* loadTexture(std::string_view filePath);
         void renderTexture(SDL_Texture* texture);
         void renderTexture(
-            SDL_Texture* texture, SDL_FRect dest);
-        void renderLine(float x1, float y1, float x2, float y2);
+            SDL_Texture* texture, const SDL_FRect& dest);
+        void renderLine(
+            float x1, float y1, float x2, float y2,
+            const SDL_Color& color={0,0,0,255});
 };

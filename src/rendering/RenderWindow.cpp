@@ -8,6 +8,7 @@
 #include <string_view>
 
 #include "../Settings.h"
+#include "SDL3/SDL_pixels.h"
 
 #include "RenderWindow.h"
 
@@ -87,7 +88,7 @@ void RenderWindow::renderTexture(SDL_Texture* texture)
 }
 
 void RenderWindow::renderTexture(
-    SDL_Texture* texture, SDL_FRect dest)
+    SDL_Texture* texture, const SDL_FRect& dest)
 {
     SDL_RenderTexture(m_renderer, texture, NULL, &dest);
 }
@@ -102,9 +103,10 @@ RenderWindow& RenderWindow::getInstance()
     return instance;
 }
 
-void RenderWindow::renderLine(float x1, float y1, float x2, float y2)
+void RenderWindow::renderLine(
+    float x1, float y1, float x2, float y2, const SDL_Color& color)
 {
-    SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
     if(!SDL_RenderLine(m_renderer, x1, y1, x2, y2))
     {
         SDL_LogError(
