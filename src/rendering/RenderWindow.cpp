@@ -116,3 +116,9 @@ void RenderWindow::renderLine(
         );
     }
 }
+
+void RenderWindow::renderFillRect(const SDL_FRect& rect, const SDL_Color& color)
+{
+    SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
+    SDL_RenderFillRect(m_renderer, &rect);
+}

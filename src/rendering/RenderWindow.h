@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SDL3/SDL_pixels.h"
 #include "SDL3/SDL_rect.h"
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
@@ -39,4 +40,5 @@ class RenderWindow
         void renderLine(
             float x1, float y1, float x2, float y2,
             const SDL_Color& color={0,0,0,255});
+        void renderFillRect(const SDL_FRect& rect, const SDL_Color& color);
 };
