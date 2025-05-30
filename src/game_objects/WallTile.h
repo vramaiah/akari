@@ -22,5 +22,6 @@ class WallTile: public Tile
         static int getBlankValue() {return s_blank;}
         bool isLit() const override {return false;} 
         void setStatus(TileStatus status) override {;}
-        TileStatus getStatus() const override {return TileStatus::wall;} 
+        TileStatus getStatus() const override {return TileStatus::wall;}
+        void click() override {};
 };

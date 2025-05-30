@@ -21,4 +21,5 @@ class FloorTile: public Tile
         void update() override;
         void setStatus(TileStatus status) override;
         TileStatus getStatus() const override {return m_status;}
+        void click() override;
 };

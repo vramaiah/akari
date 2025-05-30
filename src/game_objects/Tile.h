@@ -18,6 +18,7 @@ class Tile: public IEntity
         virtual ~Tile() = default;
         virtual bool isLit() const = 0; 
         virtual void setStatus(TileStatus status) = 0;
-        virtual TileStatus getStatus() const = 0; 
+        virtual TileStatus getStatus() const = 0;
+        virtual void click() = 0;
 };
 

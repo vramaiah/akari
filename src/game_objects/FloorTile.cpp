@@ -48,3 +48,28 @@ void FloorTile::setStatus(TileStatus status)
     if ((status != TileStatus::maxStatuses) && (status != TileStatus::wall))
         m_status = status;
 }
+
+void FloorTile::click()
+{
+    switch (m_status)
+    {
+        case TileStatus::emptyFloor:
+        {
+            m_status = TileStatus::light;
+            break;
+        }
+        case TileStatus::light:
+        {
+            m_status = TileStatus::x;
+            break;
+        }
+        case TileStatus::x:
+        {
+            m_status = TileStatus::emptyFloor;
+            break;
+        }
+        default:
+            break;
+    }
+}
+

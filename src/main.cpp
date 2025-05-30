@@ -42,6 +42,8 @@ int main()
             {
                 if (event.type == SDL_EVENT_QUIT)
                     quit = true;
+                else
+                    board.handleEvent(event);
             }
             window.clear();
             board.update();

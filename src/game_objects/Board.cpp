@@ -1,6 +1,8 @@
 #include "Board.h"
 #include "../rendering/RenderWindow.h"
 #include "FloorTile.h"
+#include "SDL3/SDL_events.h"
+#include "SDL3/SDL_mouse.h"
 #include "SDL3/SDL_render.h"
 #include "Tile.h"
 #include "WallTile.h"
@@ -10,6 +12,9 @@
 #include <optional>
 #include <string_view>
 #include <fstream>
+#include <iostream>
+
+#include "SDL3/SDL.h"
 
 Board::Board(std::string_view filePath)
 : m_tiles {}
@@ -151,5 +156,23 @@ Board::~Board()
         {
             delete tile;
         }
+    }
+}
+
+
+void Board::handleEvent(const SDL_Event& e)
+{
+    if (e.type == SDL_EVENT_MOUSE_BUTTON_UP)
+    {
+        float col {e.motion.x / (Settings::tileScale / 2)};
+        float row {e.motion.y / (Settings::tileScale / 2)};
+        Tile* tile {
+            m_tiles[static_cast<std::size_t>(col)]
+                [static_cast<std::size_t>(row)]
+        };
+        if ((e.button.button == SDL_BUTTON_RIGHT) && tile)
+            tile->setStatus(TileStatus::x); 
+        else if (tile)
+            tile->click();
     }
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SDL3/SDL_events.h"
 #include "SDL3/SDL_render.h"
 #include "Tile.h"
 #include "WallTile.h"
@@ -18,4 +19,5 @@ class Board: public IEntity
         ~Board();
         void render() const;
         void update();
+        void handleEvent(const SDL_Event& e);
 };
