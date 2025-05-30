@@ -10,7 +10,8 @@ class Board: public IEntity
 {
     private:
         std::vector<std::vector<Tile*>> m_tiles {};
-        std::vector<SDL_Texture*> m_tileTextures {};
+        std::vector<SDL_Texture*> m_floorTileTextures {};
+        std::vector<SDL_Texture*> m_wallTileTextures {};
 
     public:
         Board(std::string_view filePath);

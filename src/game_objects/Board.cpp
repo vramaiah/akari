@@ -1,9 +1,12 @@
 #include "Board.h"
 #include "../rendering/RenderWindow.h"
+#include "FloorTile.h"
 #include "SDL3/SDL_render.h"
+#include "Tile.h"
 #include "WallTile.h"
 #include "../Settings.h"
 #include "nlohmann/json.hpp"
+#include <cstddef>
 #include <optional>
 #include <string_view>
 #include <fstream>
@@ -12,25 +15,36 @@ Board::Board(std::string_view filePath)
 : m_tiles {}
 {
     // Create Textures
-    m_tileTextures.push_back(
+    m_wallTileTextures.push_back(
         RenderWindow::getInstance().loadTexture("./res/gfx/0.png")
     );
-    m_tileTextures.push_back(
+    m_wallTileTextures.push_back(
         RenderWindow::getInstance().loadTexture("./res/gfx/1.png")
     );
-    m_tileTextures.push_back(
+    m_wallTileTextures.push_back(
         RenderWindow::getInstance().loadTexture("./res/gfx/2.png")
     );
-    m_tileTextures.push_back(
+    m_wallTileTextures.push_back(
         RenderWindow::getInstance().loadTexture("./res/gfx/3.png")
     );
-    m_tileTextures.push_back(
+    m_wallTileTextures.push_back(
         RenderWindow::getInstance().loadTexture("./res/gfx/4.png")
     );
-    m_tileTextures.push_back(
+    m_wallTileTextures.push_back(
         RenderWindow::getInstance().loadTexture("./res/gfx/b.png")
     );
-    //
+    m_floorTileTextures.push_back(
+        nullptr
+    );
+    m_floorTileTextures.push_back(
+        RenderWindow::getInstance().loadTexture("./res/gfx/l.png") 
+    );
+    m_floorTileTextures.push_back(
+        RenderWindow::getInstance().loadTexture("./res/gfx/x.png") 
+    );
+    m_floorTileTextures.push_back(
+        nullptr
+    );
     for (int i {1}; i <= Settings::gridSize; ++i)
     {
         std::vector<Tile*> vec(Settings::gridSize);
@@ -51,7 +65,7 @@ Board::Board(std::string_view filePath)
             int value {feature.at("value").get<int>()};
             WallTile* tile{ new WallTile {
                 value,
-                m_tileTextures[value],
+                m_wallTileTextures[value],
                 col * Settings::tileScale,
                 row * Settings::tileScale,
                 Settings::tileScale
@@ -62,12 +76,37 @@ Board::Board(std::string_view filePath)
         {
             WallTile* tile{ new WallTile {
                 WallTile::getBlankValue(),
-                m_tileTextures[WallTile::getBlankValue()],
+                m_wallTileTextures[WallTile::getBlankValue()],
                 col * Settings::tileScale,
                 row * Settings::tileScale,
                 Settings::tileScale
             }};
             m_tiles[row][col] = tile;
+        }
+    }
+    // Create FloorTile at all other spots
+    for (
+        std::size_t i {0}; 
+        i < static_cast<std::size_t>(Settings::gridSize);
+        ++i
+    )
+    {
+        for (
+            std::size_t j {0}; 
+            j < static_cast<std::size_t>(Settings::gridSize);
+            ++j
+        )
+        {
+            auto& tile {m_tiles[i][j]};
+            if (!tile)
+                tile = new FloorTile{
+                    m_floorTileTextures[2],
+                    m_floorTileTextures[1],
+                    i * Settings::tileScale,
+                    j * Settings::tileScale,
+                    Settings::tileScale
+                };
+
         }
     }
 }

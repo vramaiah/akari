@@ -1,19 +1,18 @@
 #include "WallTile.h"
 #include "../rendering/RenderWindow.h"
 #include "SDL3/SDL_render.h"
-#include "../Settings.h"
-#include "SDL3/SDL.h"
-#include <string>
+#include "Tile.h"
 
-WallTile::WallTile(int requiredLights, SDL_Texture* tex, float x, float y, float s)
+WallTile::WallTile(
+    int requiredLights, SDL_Texture* tex, float x, float y, float s)
 : m_requiredLights {requiredLights}
 , m_texture {tex}
 , m_rect {}
 {
     m_rect.x = x;
     m_rect.y = y;
-    m_rect.w = Settings::tileScale;
-    m_rect.h = Settings::tileScale;
+    m_rect.w = s;
+    m_rect.h = s;
 }
 
 void WallTile::render() const
@@ -25,6 +24,3 @@ void WallTile::update()
 {
 }
 
-WallTile::~WallTile()
-{
-}

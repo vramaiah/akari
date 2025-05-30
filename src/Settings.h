@@ -10,6 +10,6 @@ namespace Settings
     inline constexpr int gridSize {7}; 
     inline constexpr double windowWidth {(150 * gridSize) / 2 + 10};
     inline constexpr double windowHeight {windowWidth};
-    inline constexpr SDL_Color unlitColor {106, 99, 168, 255}; 
-    inline constexpr SDL_Color backgroundColor {77, 71, 125, 255}; 
+    inline constexpr SDL_Color backgroundColor {106, 99, 168, 255}; 
+    inline constexpr SDL_Color litColor {194, 183, 219, 255}; 
 }

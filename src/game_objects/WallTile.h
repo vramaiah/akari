@@ -13,11 +13,14 @@ class WallTile: public Tile
         inline static int s_blank {5};
 
     public:
-        WallTile(int requiredLights, SDL_Texture* tex, float x, float y, float s);
-        ~WallTile();
+        WallTile(
+            int requiredLights, SDL_Texture* tex, float x, float y, float s);
         bool isOpaque() const override {return true;}
         int requiredLights() const {return m_requiredLights;}
         void render() const override;
         void update() override;
         static int getBlankValue() {return s_blank;}
+        bool isLit() const override {return false;} 
+        void setStatus(TileStatus status) override {;}
+        TileStatus getStatus() const override {return TileStatus::wall;} 
 };
