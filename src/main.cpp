@@ -17,8 +17,9 @@ int main()
     std::cout << "Welcome to Akari!\n";
     std::cout << "In an Akari Puzzle, the goal is to place light bulbs";
     std::cout << " on a grid so all purple squares are lit.\n";
-    std::cout << "    * A light bulb lights up all the purple squares in its row";
-    std::cout << "and column until blocked by a wall.\n";
+    std::cout << "    * A light bulb lights up all ";
+    std::cout << "the purple squares in its row";
+    std::cout << " and column until blocked by a wall.\n";
     std::cout << "    * No light bulb may light up another light bulb.\n";
     std::cout << "    * Black squares with a number indicate how many";
     std::cout << " squares with a light bulb share a side with that square.\n";
