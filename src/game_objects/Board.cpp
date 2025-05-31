@@ -344,3 +344,34 @@ std::vector<Tile*> Board::getRowNeighbors(std::size_t p_row, std::size_t p_col)
     }
     return neighbors;
 }
+
+bool Board::isSolved() const
+{
+    bool solved {true};
+    for (const auto& row: m_tiles)
+    {
+        for (const auto& tile: row)
+        {
+            WallTile* wallTile {dynamic_cast<WallTile*>(tile)};
+            if (wallTile)
+            {
+                if (!wallTile->neighborsSatisfied())
+                {
+                    solved = false;
+                    goto returnS;
+                }
+            }
+            else
+            {
+                if ((tile->lightStatus() != LightStatus::lit) 
+                        && !(tile->getStatus() == TileStatus::light))
+                {
+                    solved = false;
+                    goto returnS;
+                }
+            }
+        }
+    }
+    returnS:
+        return solved;
+}

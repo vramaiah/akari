@@ -34,3 +34,11 @@ void WallTile::setNeighboringLights(int nl)
     else if (nl > m_requiredLights)
         m_lightState = WallState::tooMuchLights;
 }
+
+bool WallTile::neighborsSatisfied() const
+{
+    if (m_requiredLights == s_blank)
+        return true;
+    else
+        return (m_lightState == WallState::enoughLights);
+}

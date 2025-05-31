@@ -26,4 +26,5 @@ class Board: public IEntity
         void render() const;
         void update();
         void handleEvent(const SDL_Event& e);
+        bool isSolved() const;
 };

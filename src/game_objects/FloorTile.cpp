@@ -54,6 +54,8 @@ void FloorTile::setStatus(TileStatus status)
 {
     if ((status != TileStatus::maxStatuses) && (status != TileStatus::wall))
         m_status = status;
+    if (m_status == TileStatus::light)
+        m_lightStatus = LightStatus::lit;
 }
 
 void FloorTile::click()
@@ -68,6 +70,7 @@ void FloorTile::click()
         case TileStatus::light:
         {
             m_status = TileStatus::x;
+            m_lightStatus = LightStatus::lit;
             break;
         }
         case TileStatus::x:

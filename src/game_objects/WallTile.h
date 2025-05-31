@@ -42,4 +42,5 @@ class WallTile: public Tile
         TileStatus getStatus() const override {return TileStatus::wall;}
         void click() override {};
         void setNeighboringLights(int nl);
+        bool neighborsSatisfied() const;
 };

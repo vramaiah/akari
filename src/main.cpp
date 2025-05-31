@@ -1,11 +1,13 @@
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_init.h"
 #include "SDL3/SDL_log.h"
+#include "SDL3/SDL_timer.h"
 
 #include "game_objects/Board.h"
 #include "rendering/RenderWindow.h"
 
 #include <string_view>
+#include <iostream>
 
 int main()
 {
@@ -18,6 +20,7 @@ int main()
         );
         return 1;
     }
+    bool solved {false};
     {
         RenderWindow& window {RenderWindow::getInstance()}; 
         // Logs current video driver
@@ -41,10 +44,18 @@ int main()
             }
             window.clear();
             board.update();
+            if (board.isSolved())
+            {
+                std::cout << "Solved!\n";
+                quit = true;
+                solved = true;
+            }
             board.render();
             window.display();
         }
     }
+    if (solved)
+        SDL_Delay(3000);
     SDL_Quit();
     return 0;
 }
