@@ -9,8 +9,10 @@
 #include "../Settings.h"
 #include "nlohmann/json.hpp"
 #include <algorithm>
+#include <array>
 #include <cstddef>
 #include <optional>
+#include <stdexcept>
 #include <string_view>
 #include <fstream>
 #include <iostream>
@@ -21,23 +23,65 @@ Board::Board(std::string_view filePath)
 : m_tiles {}
 {
     // Create Textures
+    std::array<SDL_Texture*, WallTile::numStates> texArr {};
+    texArr[WallTile::notEnoughLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/0.png");
+    texArr[WallTile::enoughLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/0g.png");
+    texArr[WallTile::tooMuchLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/0r.png");
     m_wallTileTextures.push_back(
-        RenderWindow::getInstance().loadTexture("./res/gfx/0.png")
+            texArr
     );
+    texArr = {};
+    texArr[WallTile::notEnoughLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/1.png");
+    texArr[WallTile::enoughLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/1g.png");
+    texArr[WallTile::tooMuchLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/1r.png");
     m_wallTileTextures.push_back(
-        RenderWindow::getInstance().loadTexture("./res/gfx/1.png")
+            texArr
     );
+    texArr = {};
+    texArr[WallTile::notEnoughLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/2.png");
+    texArr[WallTile::enoughLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/2g.png");
+    texArr[WallTile::tooMuchLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/2r.png");
     m_wallTileTextures.push_back(
-        RenderWindow::getInstance().loadTexture("./res/gfx/2.png")
+            texArr
     );
+    texArr = {};
+    texArr[WallTile::notEnoughLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/3.png");
+    texArr[WallTile::enoughLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/3g.png");
+    texArr[WallTile::tooMuchLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/3r.png");
     m_wallTileTextures.push_back(
-        RenderWindow::getInstance().loadTexture("./res/gfx/3.png")
+            texArr
     );
+    texArr = {};
+    texArr[WallTile::notEnoughLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/4.png");
+    texArr[WallTile::enoughLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/4g.png");
+    texArr[WallTile::tooMuchLights] = 
+        RenderWindow::getInstance().loadTexture("./res/gfx/4r.png");
     m_wallTileTextures.push_back(
-        RenderWindow::getInstance().loadTexture("./res/gfx/4.png")
+            texArr
     );
-    m_wallTileTextures.push_back(
+    texArr = {};
+    SDL_Texture* tex {
         RenderWindow::getInstance().loadTexture("./res/gfx/b.png")
+    };
+    texArr[WallTile::notEnoughLights] = tex; 
+    texArr[WallTile::enoughLights] = tex; 
+    texArr[WallTile::tooMuchLights] = tex; 
+    m_wallTileTextures.push_back(
+            texArr
     );
     m_floorTileTextures.push_back(
         nullptr
@@ -172,6 +216,40 @@ void Board::update()
                 m_tiles.at(row).at(col)->setLightStatus(LightStatus::lit);
             else
                 m_tiles.at(row).at(col)->setLightStatus(LightStatus::dark);
+            // WallTile specific stuff
+            WallTile* wall {dynamic_cast<WallTile*>(m_tiles[row][col])};
+            if (!wall)
+                continue;
+            int nl {};
+            try
+            {
+                if (m_tiles.at(row-1).at(col)->getStatus() == TileStatus::light)
+                {
+                    nl += 1;
+                }
+            } catch (std::out_of_range) {;}
+            try
+            {
+                if (m_tiles.at(row+1).at(col)->getStatus() == TileStatus::light)
+                {
+                    nl += 1;
+                }
+            } catch (std::out_of_range) {;}
+            try
+            {
+                if (m_tiles.at(row).at(col+1)->getStatus() == TileStatus::light)
+                {
+                    nl += 1;
+                }
+            } catch (std::out_of_range) {;}
+            try
+            {
+                if (m_tiles.at(row).at(col-1)->getStatus() == TileStatus::light)
+                {
+                    nl += 1;
+                }
+            } catch (std::out_of_range) {;}
+            wall->setNeighboringLights(nl);
         }
     }
 }
