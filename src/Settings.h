@@ -5,7 +5,7 @@
 
 namespace Settings
 {
-    inline constexpr std::string_view windowName {"Akari [alpha]"};
+    inline constexpr std::string_view windowName {"Akari"}; 
     inline constexpr float tileScale {150.0f};
     inline constexpr int gridSize {7}; 
     inline constexpr double windowWidth {(150 * gridSize) / 2 + 10};
