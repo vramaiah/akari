@@ -4,6 +4,7 @@
 #include "SDL3/SDL_render.h"
 #include "Tile.h"
 #include "WallTile.h"
+#include <cstddef>
 #include <memory>
 #include <string_view>
 #include <vector>
@@ -13,6 +14,7 @@ class Board: public IEntity
         std::vector<std::vector<Tile*>> m_tiles {};
         std::vector<SDL_Texture*> m_floorTileTextures {};
         std::vector<SDL_Texture*> m_wallTileTextures {};
+        std::vector<Tile*> getNeighbors(std::size_t row, std::size_t col);
 
     public:
         Board(std::string_view filePath);

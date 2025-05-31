@@ -6,10 +6,11 @@
 #include "SDL3/SDL_render.h"
 #include "Tile.h"
 
-FloorTile::FloorTile(SDL_Texture* xTex, SDL_Texture* lTex, float x, float y, float s)
+FloorTile::FloorTile(
+    SDL_Texture* xTex, SDL_Texture* lTex, float x, float y, float s)
 : m_lightTexture {lTex}
 , m_xTexture {xTex}
-, m_isLit {}
+, m_lightStatus {LightStatus::dark}
 , m_rect {}
 , m_status {TileStatus::emptyFloor}
 {
@@ -21,11 +22,16 @@ FloorTile::FloorTile(SDL_Texture* xTex, SDL_Texture* lTex, float x, float y, flo
 
 void FloorTile::render() const
 {
-    if (m_isLit)
+    if (m_lightStatus == LightStatus::lit)
         RenderWindow::getInstance().renderFillRect(m_rect, Settings::litColor);
+    if (m_lightStatus == LightStatus::burnt)
+        RenderWindow::getInstance().renderFillRect(
+            m_rect, Settings::burntColor);
     switch (m_status) {
         case TileStatus::light:
         {
+            RenderWindow::getInstance().renderFillRect(
+                m_rect, Settings::litColor);
             RenderWindow::getInstance().renderTexture(m_lightTexture, m_rect);
             break;
         }
@@ -73,3 +79,8 @@ void FloorTile::click()
     }
 }
 
+void FloorTile::setLightStatus(LightStatus status)
+{
+    if ((status != LightStatus::maxStatuses))
+        m_lightStatus = status;
+}

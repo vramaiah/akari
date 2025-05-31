@@ -11,12 +11,21 @@ enum class TileStatus
     maxStatuses
 };
 
+enum class LightStatus
+{
+    dark,
+    lit,
+    burnt,
+    maxStatuses
+};
+
 class Tile: public IEntity
 {
     public:
         virtual bool isOpaque() const = 0;
         virtual ~Tile() = default;
-        virtual bool isLit() const = 0; 
+        virtual LightStatus lightStatus() const = 0; 
+        virtual void setLightStatus(LightStatus status) = 0;
         virtual void setStatus(TileStatus status) = 0;
         virtual TileStatus getStatus() const = 0;
         virtual void click() = 0;

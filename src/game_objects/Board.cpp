@@ -8,6 +8,7 @@
 #include "WallTile.h"
 #include "../Settings.h"
 #include "nlohmann/json.hpp"
+#include <algorithm>
 #include <cstddef>
 #include <optional>
 #include <string_view>
@@ -50,10 +51,10 @@ Board::Board(std::string_view filePath)
     m_floorTileTextures.push_back(
         nullptr
     );
-    for (int i {1}; i <= Settings::gridSize; ++i)
+    for (int i {0}; i < Settings::gridSize; ++i)
     {
-        std::vector<Tile*> vec(Settings::gridSize);
-        m_tiles.push_back(vec);
+        std::vector<Tile*> vec(Settings::gridSize, nullptr);
+        m_tiles.push_back(std::move(vec));
     }
     // Get level from file
     std::ifstream input_file(filePath);
@@ -71,22 +72,24 @@ Board::Board(std::string_view filePath)
             WallTile* tile{ new WallTile {
                 value,
                 m_wallTileTextures[value],
-                col * Settings::tileScale,
-                row * Settings::tileScale,
+                std::round(col * Settings::tileScale),
+                std::round(row * Settings::tileScale),
                 Settings::tileScale
             }};
-            m_tiles[row][col] = tile;
+            m_tiles[static_cast<std::size_t>(row)]
+                [static_cast<std::size_t>(col)] = tile;
         }
         else
         {
             WallTile* tile{ new WallTile {
                 WallTile::getBlankValue(),
                 m_wallTileTextures[WallTile::getBlankValue()],
-                col * Settings::tileScale,
-                row * Settings::tileScale,
+                std::round(col * Settings::tileScale),
+                std::round(row * Settings::tileScale),
                 Settings::tileScale
             }};
-            m_tiles[row][col] = tile;
+            m_tiles[static_cast<std::size_t>(row)]
+                [static_cast<std::size_t>(col)] = tile;
         }
     }
     // Create FloorTile at all other spots
@@ -102,16 +105,17 @@ Board::Board(std::string_view filePath)
             ++j
         )
         {
-            auto& tile {m_tiles[i][j]};
-            if (!tile)
-                tile = new FloorTile{
+            if (!m_tiles[i][j])
+            {
+                FloorTile* ft { new FloorTile{
                     m_floorTileTextures[2],
                     m_floorTileTextures[1],
-                    i * Settings::tileScale,
                     j * Settings::tileScale,
+                    i * Settings::tileScale,
                     Settings::tileScale
-                };
-
+                }};
+                m_tiles[i][j] = ft;
+            }
         }
     }
 }
@@ -146,6 +150,30 @@ void Board::render() const
 
 void Board::update()
 {
+    // Make tiles in same row/col illuminated
+    for (std::size_t row {0}; row < Settings::gridSize; ++row)
+    {
+        for (std::size_t col {0}; col < Settings::gridSize; ++col)
+        {
+            int numLights {0};
+            for (Tile* tile: getNeighbors(row, col))
+            {
+                if (!tile)
+                {
+                    std::cout << "No tile for row: " << row << " col: ";
+                    std::cout << col << " during Board::update()";
+                }
+                if (tile->getStatus() == TileStatus::light)
+                {
+                    numLights++;
+                }
+            }
+            if (numLights >= 1)
+                m_tiles.at(row).at(col)->setLightStatus(LightStatus::lit);
+            else
+                m_tiles.at(row).at(col)->setLightStatus(LightStatus::dark);
+        }
+    }
 }
 
 Board::~Board()
@@ -164,8 +192,8 @@ void Board::handleEvent(const SDL_Event& e)
 {
     if (e.type == SDL_EVENT_MOUSE_BUTTON_UP)
     {
-        float col {e.motion.x / (Settings::tileScale / 2)};
-        float row {e.motion.y / (Settings::tileScale / 2)};
+        float row {e.motion.x / (Settings::tileScale / 2)};
+        float col {e.motion.y / (Settings::tileScale / 2)};
         Tile* tile {
             m_tiles[static_cast<std::size_t>(col)]
                 [static_cast<std::size_t>(row)]
@@ -175,4 +203,38 @@ void Board::handleEvent(const SDL_Event& e)
         else if (tile)
             tile->click();
     }
+}
+
+std::vector<Tile*> Board::getNeighbors(std::size_t p_row, std::size_t p_col)
+{
+    std::vector<Tile*> neighbors {};
+    for (std::size_t row {p_row}; row > 0; --row)
+    {
+        if (m_tiles.at(row).at(p_col)->getStatus() == TileStatus::wall)
+            break;
+        if ((row != p_row))
+            neighbors.push_back(m_tiles.at(row).at(p_col));
+    }
+    for (std::size_t row {p_row}; row < Settings::gridSize; ++row)
+    {
+        if (m_tiles.at(row).at(p_col)->getStatus() == TileStatus::wall)
+            break;
+        if ((row != p_row))
+            neighbors.push_back(m_tiles[row][p_col]);
+    }
+    for (std::size_t col {p_col}; col < Settings::gridSize; ++col)
+    {
+        if (m_tiles.at(p_row).at(col)->getStatus() == TileStatus::wall)
+            break;
+        if ((col!= p_col))
+            neighbors.push_back(m_tiles.at(p_row).at(col));
+    }
+    for (std::size_t col {p_col}; col > 0; --col)
+    {
+        if (m_tiles.at(p_row).at(col)->getStatus() == TileStatus::wall)
+            break;
+        if ((col!= p_col))
+            neighbors.push_back(m_tiles.at(p_row).at(col));
+    }
+    return neighbors;
 }

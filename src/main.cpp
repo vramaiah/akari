@@ -33,7 +33,7 @@ int main()
         );
         // Creates a Grass Sprite
         // Main Game Loop
-        Board board {"./res/levels/normal_1.json"};
+        Board board {"./res/levels/easy_1.json"};
         SDL_Event event {};
         bool quit {false};
         while (!quit) 
