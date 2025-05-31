@@ -1,0 +1,13 @@
+[
+  { "type": "clue", "value": 0, "row": 0, "col": 0 },
+  { "type": "black", "value": null, "row": 0, "col": 2 },
+  { "type": "black", "value": null, "row": 0, "col": 5 },
+  { "type": "clue", "value": 4, "row": 2, "col": 3 },
+  { "type": "black", "value": null, "row": 3, "col": 2 },
+  { "type": "black", "value": null, "row": 4, "col": 3 },
+  { "type": "clue", "value": 4, "row": 3, "col": 4 },
+  { "type": "black", "value": null, "row": 5, "col": 6 },
+  { "type": "black", "value": null, "row": 6, "col": 4 },
+  { "type": "clue", "value": 2, "row": 6, "col": 1 }
+]
+
