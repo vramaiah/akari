@@ -201,7 +201,7 @@ void Board::update()
     {
         for (std::size_t col {0}; col < Settings::gridSize; ++col)
         {
-            int numLights {0};
+            int numColLights {0};
             for (Tile* tile: getColNeighbors(row, col))
             {
                 if (!tile)
@@ -211,38 +211,29 @@ void Board::update()
                 }
                 else if (tile->getStatus() == TileStatus::light)
                 {
-                    numLights++;
+                    numColLights++;
+                }
+            }
+            int numRowLights {0};
+            for (Tile* tile: getRowNeighbors(row, col))
+            {
+                if ((tile->getStatus() == TileStatus::light) && tile)
+                {
+                    numRowLights++;
                 }
             }
             Tile* tile {m_tiles.at(row).at(col)};
-            if (
-                (numLights > 0) && (tile->getStatus() == TileStatus::light))
+            if ((
+                    (numColLights > 0) || (numRowLights > 0)) 
+                    && (tile->getStatus() == TileStatus::light
+                ))
                 tile->setLightStatus(LightStatus::burnt);
-            else if (numLights > 1)
+            else if ((numColLights > 1) || (numRowLights > 1))
                 tile->setLightStatus(LightStatus::burnt);
-            else if (numLights == 1)
+            else if ((numColLights == 1) || (numRowLights == 1))
                 tile->setLightStatus(LightStatus::lit);
             else
-            {
-                int numLights {0};
-                for (Tile* tile: getRowNeighbors(row, col))
-                {
-                    if ((tile->getStatus() == TileStatus::light) && tile)
-                    {
-                        numLights++;
-                    }
-                }
-                Tile* tile {m_tiles.at(row).at(col)};
-                if (
-                    (numLights > 0) && (tile->getStatus() == TileStatus::light))
-                    tile->setLightStatus(LightStatus::burnt);
-                else if (numLights > 1)
-                    tile->setLightStatus(LightStatus::burnt);
-                else if (numLights == 1)
-                    tile->setLightStatus(LightStatus::lit);
-                else
-                    tile->setLightStatus(LightStatus::dark);
-            }
+                tile->setLightStatus(LightStatus::dark);
             // WallTile specific stuff
             WallTile* wall {dynamic_cast<WallTile*>(m_tiles[row][col])};
             if (!wall)
