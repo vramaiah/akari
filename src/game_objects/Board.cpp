@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <array>
 #include <cstddef>
+#include <iterator>
 #include <optional>
 #include <stdexcept>
 #include <string_view>
@@ -286,8 +287,10 @@ void Board::handleEvent(const SDL_Event& e)
 std::vector<Tile*> Board::getNeighbors(std::size_t p_row, std::size_t p_col)
 {
     std::vector<Tile*> neighbors {};
-    for (std::size_t row {p_row}; row > 0; --row)
+    for (std::size_t row {p_row}; row >= 0; --row)
     {
+        if (row > (std::ssize(m_tiles)))
+            break;
         if (m_tiles.at(row).at(p_col)->getStatus() == TileStatus::wall)
             break;
         if ((row != p_row))
@@ -307,8 +310,10 @@ std::vector<Tile*> Board::getNeighbors(std::size_t p_row, std::size_t p_col)
         if ((col!= p_col))
             neighbors.push_back(m_tiles.at(p_row).at(col));
     }
-    for (std::size_t col {p_col}; col > 0; --col)
+    for (std::size_t col {p_col}; col >= 0; --col)
     {
+        if (col > (std::ssize(m_tiles)))
+            break;
         if (m_tiles.at(p_row).at(col)->getStatus() == TileStatus::wall)
             break;
         if ((col!= p_col))
