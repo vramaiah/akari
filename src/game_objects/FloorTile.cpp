@@ -30,8 +30,9 @@ void FloorTile::render() const
     switch (m_status) {
         case TileStatus::light:
         {
-            RenderWindow::getInstance().renderFillRect(
-                m_rect, Settings::litColor);
+            if (!(m_lightStatus == LightStatus::burnt))
+                RenderWindow::getInstance().renderFillRect(
+                    m_rect, Settings::litColor);
             RenderWindow::getInstance().renderTexture(m_lightTexture, m_rect);
             break;
         }

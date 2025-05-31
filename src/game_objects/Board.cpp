@@ -17,6 +17,7 @@
 #include <string_view>
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 #include "SDL3/SDL.h"
 
@@ -201,22 +202,47 @@ void Board::update()
         for (std::size_t col {0}; col < Settings::gridSize; ++col)
         {
             int numLights {0};
-            for (Tile* tile: getNeighbors(row, col))
+            for (Tile* tile: getColNeighbors(row, col))
             {
                 if (!tile)
                 {
                     std::cout << "No tile for row: " << row << " col: ";
                     std::cout << col << " during Board::update()";
                 }
-                if (tile->getStatus() == TileStatus::light)
+                else if (tile->getStatus() == TileStatus::light)
                 {
                     numLights++;
                 }
             }
-            if (numLights >= 1)
-                m_tiles.at(row).at(col)->setLightStatus(LightStatus::lit);
+            Tile* tile {m_tiles.at(row).at(col)};
+            if (
+                (numLights > 0) && (tile->getStatus() == TileStatus::light))
+                tile->setLightStatus(LightStatus::burnt);
+            else if (numLights > 1)
+                tile->setLightStatus(LightStatus::burnt);
+            else if (numLights == 1)
+                tile->setLightStatus(LightStatus::lit);
             else
-                m_tiles.at(row).at(col)->setLightStatus(LightStatus::dark);
+            {
+                int numLights {0};
+                for (Tile* tile: getRowNeighbors(row, col))
+                {
+                    if ((tile->getStatus() == TileStatus::light) && tile)
+                    {
+                        numLights++;
+                    }
+                }
+                Tile* tile {m_tiles.at(row).at(col)};
+                if (
+                    (numLights > 0) && (tile->getStatus() == TileStatus::light))
+                    tile->setLightStatus(LightStatus::burnt);
+                else if (numLights > 1)
+                    tile->setLightStatus(LightStatus::burnt);
+                else if (numLights == 1)
+                    tile->setLightStatus(LightStatus::lit);
+                else
+                    tile->setLightStatus(LightStatus::dark);
+            }
             // WallTile specific stuff
             WallTile* wall {dynamic_cast<WallTile*>(m_tiles[row][col])};
             if (!wall)
@@ -284,7 +310,7 @@ void Board::handleEvent(const SDL_Event& e)
     }
 }
 
-std::vector<Tile*> Board::getNeighbors(std::size_t p_row, std::size_t p_col)
+std::vector<Tile*> Board::getColNeighbors(std::size_t p_row, std::size_t p_col)
 {
     std::vector<Tile*> neighbors {};
     for (std::size_t row {p_row}; row >= 0; --row)
@@ -303,6 +329,12 @@ std::vector<Tile*> Board::getNeighbors(std::size_t p_row, std::size_t p_col)
         if ((row != p_row))
             neighbors.push_back(m_tiles[row][p_col]);
     }
+    return neighbors;
+}
+
+std::vector<Tile*> Board::getRowNeighbors(std::size_t p_row, std::size_t p_col)
+{
+    std::vector<Tile*> neighbors {};
     for (std::size_t col {p_col}; col < Settings::gridSize; ++col)
     {
         if (m_tiles.at(p_row).at(col)->getStatus() == TileStatus::wall)

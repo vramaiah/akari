@@ -17,7 +17,8 @@ class Board: public IEntity
         std::vector<SDL_Texture*> m_floorTileTextures {};
         std::vector<std::array<SDL_Texture*, WallTile::numStates>> 
             m_wallTileTextures {};
-        std::vector<Tile*> getNeighbors(std::size_t row, std::size_t col);
+        std::vector<Tile*> getColNeighbors(std::size_t row, std::size_t col);
+        std::vector<Tile*> getRowNeighbors(std::size_t row, std::size_t col);
 
     public:
         Board(std::string_view filePath);

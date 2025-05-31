@@ -1,17 +1,11 @@
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_init.h"
 #include "SDL3/SDL_log.h"
-#include "Settings.h"
-#include "game_objects/Board.h"
-#include "nlohmann/json_fwd.hpp"
-#include "rendering/RenderWindow.h"
-#include "game_objects/WallTile.h"
 
-#include "nlohmann/json.hpp"
-#include <fstream>
+#include "game_objects/Board.h"
+#include "rendering/RenderWindow.h"
+
 #include <string_view>
-#include <vector>
-#include <filesystem>
 
 int main()
 {
