@@ -22,17 +22,23 @@ FloorTile::FloorTile(
 
 void FloorTile::render() const
 {
-    if (m_lightStatus == LightStatus::lit)
-        RenderWindow::getInstance().renderFillRect(m_rect, Settings::litColor);
-    if (m_lightStatus == LightStatus::burnt)
-        RenderWindow::getInstance().renderFillRect(
-            m_rect, Settings::burntColor);
+    if (!m_solved)
+    {
+        if (m_lightStatus == LightStatus::lit)
+            RenderWindow::getInstance().renderFillRect(m_rect, Settings::litColor);
+        if (m_lightStatus == LightStatus::burnt)
+            RenderWindow::getInstance().renderFillRect(
+                m_rect, Settings::burntColor);
+    }
     switch (m_status) {
         case TileStatus::light:
         {
-            if (!(m_lightStatus == LightStatus::burnt))
+            if (!(m_lightStatus == LightStatus::burnt) && !m_solved)
                 RenderWindow::getInstance().renderFillRect(
                     m_rect, Settings::litColor);
+            if (m_solved)
+                RenderWindow::getInstance().renderFillRect(
+                    m_rect, Settings::solvedColor);
             RenderWindow::getInstance().renderTexture(m_lightTexture, m_rect);
             break;
         }
@@ -87,4 +93,9 @@ void FloorTile::setLightStatus(LightStatus status)
 {
     if ((status != LightStatus::maxStatuses))
         m_lightStatus = status;
+}
+
+void FloorTile::setSolved(bool s)
+{
+    m_solved = s;
 }

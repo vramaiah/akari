@@ -19,6 +19,8 @@ class Board: public IEntity
             m_wallTileTextures {};
         std::vector<Tile*> getColNeighbors(std::size_t row, std::size_t col);
         std::vector<Tile*> getRowNeighbors(std::size_t row, std::size_t col);
+        bool m_solved {};
+        bool _isSolved() const;
 
     public:
         Board(std::string_view filePath);

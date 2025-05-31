@@ -13,4 +13,6 @@ namespace Settings
     inline constexpr SDL_Color backgroundColor {106, 99, 168, 255}; 
     inline constexpr SDL_Color litColor {194, 183, 219, 255}; 
     inline constexpr SDL_Color burntColor {233, 126, 126, 255}; 
+    inline constexpr int solveDelay {3000};
+    inline constexpr SDL_Color solvedColor {22, 176, 25}; 
 }

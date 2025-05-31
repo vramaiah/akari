@@ -11,6 +11,7 @@ class FloorTile: public Tile
         TileStatus m_status {TileStatus::emptyFloor};
         LightStatus m_lightStatus {LightStatus::dark};
         SDL_FRect m_rect {};
+        bool m_solved {};
     
     public:
         FloorTile(
@@ -23,4 +24,5 @@ class FloorTile: public Tile
         void setStatus(TileStatus status) override;
         TileStatus getStatus() const override {return m_status;}
         void click() override;
+        void setSolved(bool s);
 };

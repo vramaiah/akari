@@ -3,6 +3,7 @@
 #include "SDL3/SDL_log.h"
 #include "SDL3/SDL_timer.h"
 
+#include "Settings.h"
 #include "game_objects/Board.h"
 #include "rendering/RenderWindow.h"
 
@@ -11,6 +12,7 @@
 
 int main()
 {
+    SDL_SetLogPriorities(SDL_LogPriority::SDL_LOG_PRIORITY_ERROR);
     if (!SDL_Init(SDL_INIT_VIDEO))
     {
         SDL_LogError(
@@ -46,7 +48,6 @@ int main()
             board.update();
             if (board.isSolved())
             {
-                std::cout << "Solved!\n";
                 quit = true;
                 solved = true;
             }
@@ -55,7 +56,10 @@ int main()
         }
     }
     if (solved)
-        SDL_Delay(3000);
+    {
+        SDL_Delay(Settings::solveDelay);
+        std::cout << "Solved!\n";
+    }
     SDL_Quit();
     return 0;
 }

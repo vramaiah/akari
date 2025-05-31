@@ -270,6 +270,22 @@ void Board::update()
             wall->setNeighboringLights(nl);
         }
     }
+    m_solved = _isSolved();
+    if (m_solved)
+    {
+        for (const auto& row: m_tiles)
+        {
+            for (const auto& tile: row)
+            {
+                if (tile->getStatus() == TileStatus::light)
+                {
+                    FloorTile* floorT {dynamic_cast<FloorTile*>(tile)};
+                    if (floorT)
+                        floorT->setSolved(true);
+                }
+            }
+        }
+    }
 }
 
 Board::~Board()
@@ -345,7 +361,7 @@ std::vector<Tile*> Board::getRowNeighbors(std::size_t p_row, std::size_t p_col)
     return neighbors;
 }
 
-bool Board::isSolved() const
+bool Board::_isSolved() const
 {
     bool solved {true};
     for (const auto& row: m_tiles)
@@ -374,4 +390,9 @@ bool Board::isSolved() const
     }
     returnS:
         return solved;
+}
+
+bool Board::isSolved() const
+{
+    return m_solved;
 }
