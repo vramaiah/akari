@@ -2,7 +2,7 @@
     <h1>Akari</h1>
 </div>
 
-This is an implementation of the puzzle Akari in C++.
+This is an implementation of the puzzle [Akari](https://en.wikipedia.org/wiki/Light_Up_(puzzle)) in C++.
 
 In an Akari Puzzle, the goal is to place light bulbs on a grid so all purple squares are lit.
 * A light bulb lights up all the purple squares in its row and column until blocked by a wall.
