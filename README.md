@@ -1,8 +1,6 @@
 <div align="center">
     <h1>Akari</h1>
 </div>
-![forthebadge](https://forthebadge.com/badges/made-with-c-plus-plus.svg)
-![forthebadge](https://forthebadge.com/api/badges/generate?panels=2&primaryLabel=Made+for&secondaryLabel=Mac+OS&primaryBGColor=%2331C4F3&primaryTextColor=%23FFFFFF&secondaryBGColor=%23389AD5&secondaryTextColor=%23FFFFFF&primaryFontSize=12&primaryFontWeight=600&primaryLetterSpacing=2&primaryFontFamily=Roboto&primaryTextTransform=uppercase&secondaryFontSize=12&secondaryFontWeight=900&secondaryLetterSpacing=2&secondaryFontFamily=Montserrat&secondaryTextTransform=uppercase&secondaryIcon=apple&secondaryIconColor=%23FFFFFF&secondaryIconSize=16&secondaryIconPosition=left)
 
 This is an implementation of the puzzle [Akari](https://en.wikipedia.org/wiki/Light_Up_(puzzle)) in C++.
 
